@@ -172,6 +172,7 @@ class SurveyElementBuilder(object):
         if d[u'type'] == u'survey' and u'title' not in d:
             d_copy[u'title'] = d[u'name']
         result = section_class(**d_copy)
+        # print result
         for child in children:
             #Deep copying the child is a hacky solution to the or_other bug.
             #I don't know why it works.

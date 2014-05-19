@@ -738,6 +738,13 @@ def workbook_to_json(
                             del new_json_dict['hint']
                         child_list.append(generated_label_element)
 
+                if 'intent' in new_json_dict:
+                    intent = new_json_dict['intent']
+                    new_json_dict[u"control"][u"intent"] = intent
+                    # del new_json_dict['intent']
+                    # print intent, child_list
+                    # child_list.append(intent)
+
                 parent_children_array.append(new_json_dict)
                 stack.append((control_type, child_list))
                 continue
@@ -939,7 +946,7 @@ def workbook_to_json(
         noop, survey_children_array = stack[0]
         survey_children_array.append(meta_element)
 
-    #print_pyobj_to_json(json_dict)
+    # print_pyobj_to_json(json_dict)
     return json_dict
 
 

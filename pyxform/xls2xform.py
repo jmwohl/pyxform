@@ -14,7 +14,9 @@ def xls2xform_convert():
     warnings = []
 
     json_survey = xls2json.parse_file_to_json(argv[1], warnings=warnings)
+    # print json_survey
     survey = builder.create_survey_element_from_dict(json_survey)
+    # print survey;
     # Setting validate to false will cause the form not to be processed by
     # ODK Validate.
     # This may be desirable since ODK Validate requires launching a subprocess
@@ -40,6 +42,7 @@ if __name__ == '__main__':
             response = {'code': None, 'message': None, 'warnings': []}
 
             try:
+                print 'Outputting json?'
                 response['warnings'] = xls2xform_convert()
 
                 response['code'] = 100
