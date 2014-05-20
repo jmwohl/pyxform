@@ -2,6 +2,11 @@
 pyxform v0.9
 ============
 
+## Notes about this fork
+I've created this fork of pyxform to work on integration of the [Faciliator app](https://github.com/SEL-Columbia/Facilitator). The goal is to add a simple and intuitive method for creating a group of fields that will be populated in ODK using the external Faciliator app.
+
+*See the facilitator.xls for an example of creating a Facilitator field.*
+
 pyxform is a Python library that makes writing XForms for ODK Collect and enketo
 easy by converting XLS(X) spreadsheets into XForms. A new user of pyxform should
 look at the documentation `here <https://formhub.org/syntax/>`_ or
