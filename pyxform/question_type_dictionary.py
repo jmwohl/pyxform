@@ -794,7 +794,7 @@ QUESTION_TYPE_DICT = \
             "type": "string", 
             "jr:preloadParams": "uri:email"
         }
-    }, 
+    } 
 }
 
 #import os

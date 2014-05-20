@@ -48,6 +48,8 @@ class SurveyElement(dict):
     def _default(self):
         # TODO: need way to override question type dictionary
         defaults = QUESTION_TYPE_DICT
+        # print self
+        # print defaults.get(self.get(u"type"), {})
         return defaults.get(self.get(u"type"), {})
 
     def __getattr__(self, key):

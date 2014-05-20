@@ -8,6 +8,7 @@ import constants
 
 control = {
     u"group": constants.GROUP,
+    u"facilitator": constants.GROUP,
     u"lgroup": constants.REPEAT,
     u"repeat": constants.REPEAT,
     u"loop": constants.LOOP,

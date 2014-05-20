@@ -46,6 +46,7 @@ class SurveyElementBuilder(object):
         u"group": GroupedSection,
         u"repeat": RepeatingSection,
         u"survey": Survey,
+        u"facilitator": GroupedSection,
         }
 
     def __init__(self, **kwargs):

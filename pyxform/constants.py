@@ -55,3 +55,6 @@ COLUMNS = u"columns" #this is for loop statements
 CHOICES_AND_COLUMNS = u"choices and columns"
 CASCADING_CHOICES = u"cascades"
 
+# The Facilitator App Intent
+FACILITATOR_INTENT = u"org.columbia.sel.facilitator.COLLECT"
+
