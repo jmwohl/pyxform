@@ -144,14 +144,62 @@ class Survey(Section):
             dicty[path[0]] = {}
         self._add_to_nested_dict(dicty[path[0]], path[1:], value)
 
+    def _setup_ex_group_itext(self):
+        """
+        Add the appropriate fields to the self._translations dict for use with external app group fields
+        """
+        # self._translations[d['long']]
+
+    
+    """
+    2014-05-21
+    Hacking in the addition of facilitator itext values to work with ODK external app expectations. In order
+    to change the "Launch" button text and the error message that is returned if the app can't be found, ODK
+    needs the following itext structure:
+
+        <itext>
+            <translation default="true()" lang="default">
+                <text id="/facility_group_field_type/facility:label">
+                    <value form="buttonText">Find Facility</value>
+                    <value form="noAppErrorString">Sorry, an appropriate app could not be found.</value>
+                </text>
+            </translation>
+        </itext>
+
+        ...
+
+        <label ref="jr:itext('/facility_group_field_type/facility:label')"/>
+
+
+    I'm using the label for the 'buttonText' element and hint for the 'noAppErrorString' element. In this way, multiple
+    languages can still be used, but the hint only appears for the error message.
+
+    """
     def _setup_translations(self):
         """
         set up the self._translations dict which will be referenced in the setup media and itext functions
         """
         self._translations = defaultdict(dict)
         for element in self.iter_descendants():
+            # grab the intent from the control dict if it exists
+            intent =  element.get(u"control", {}).get(u"intent")
             for d in element.get_translations(self.default_language):
-                self._translations[d['lang']][d['path']] = {"long" : d['text']}
+                if (intent and constants.FACILITATOR_INTENT in intent):
+                    # alright, we have a Facilitator group field
+                    # print "we're in the facility group " + d['lang'] + ", " + d['path']
+                    self._translations[d['lang']][d['path']] = {"buttonText" : d['text']}
+                    if ('label' in d['path']):
+                        # store the label path, since we're going to use the hint for the error message.
+                        labelPath = d['path']
+                    if ('hint' in d['path']):
+                        # this is a hint... we want it to be in the same text node as the label, 
+                        # so we add it there with a key of "noAppErrorString", then delete the original
+                        self._translations[d['lang']][labelPath]["noAppErrorString"] = d['text']
+                        del self._translations[d['lang']][d['path']]
+                else:
+                    self._translations[d['lang']][d['path']] = {"long" : d['text']}
+
+        translations = self._translations.copy()
 
         #This code sets up translations for choices in filtered selects.
         for list_name, choice_list in self.choices.items():
@@ -275,6 +323,10 @@ class Survey(Section):
                         #I'm ignoring long types for now because I don't know how they are supposed to work.
                         #itext_nodes.append(node("value", value, form=media_type, toParseString=outputInserted))
                         itext_nodes.append(node("value", value, toParseString=outputInserted))
+                    elif media_type == "buttonText" or media_type == "noAppErrorString":
+                        # This is added in order to support the use of the External App functionality for Facilitator
+                        value, outputInserted = self.insert_output_values(media_value)
+                        itext_nodes.append(node("value", value, form=media_type, toParseString=outputInserted))
                     elif media_type == "image":
 #                        itext_nodes.append(node("value", "jr://images/" + media_value, form=media_type))
                         value, outputInserted = self.insert_output_values(media_value)
